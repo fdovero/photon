@@ -1,34 +1,22 @@
-# BLOGOTEXT 
+# Photon 
 
 ---
 
-This is Blogotext, the lightweight SQLite Blog-Engine.
-2011 - 2014 Timo van Neerden http://lehollandaisvolant.net/blogotext/
-
----
-
-![alt tag](http://lehollandaisvolant.net/blogotext/blogotext-screen.png)
+This is Photon, a lightweight PHP portfolie.
+2015- Timo van Neerden http://lehollandaisvolant.net/contact/
 
 ---
 
 - Requirements
-  * PHP 5.3
-  * SQLite with PDO support (or MySQL with PDO Support)
-  * PHP GD, cURL, LibXML, GZip for some optionnal features
+  * PHP 5
   * A CSS3 / HTML5 compatible Browser (Firefox, Opera…)
-  * min 1 Mo disk space (more data = more space needed)
 
 - Installation
-  * Unzip the downloaded " blogotext.zip " file
-  * Upload folder to your site (eg : http://example.com/blog)
-  * Use your browser to go to your site
-  * Follow the few steps
+  * Unzip the archive
+  * Upload folder to your site (eg : http://example.com/portfolio)
+  * Create a http://example.com/portfolio/img folder
+  * Upload folders with images in the /img folder
 
-- Bugs
-  * Please, report *any* bugs to http://lehollandaisvolant.net/contact It will help me.
-
-
-
- [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](http://flattr.com/thing/734525/Blogotext)
+ [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/thing/e55e534d86eac089e3321319ae45a5ad)
 
 
