@@ -1,6 +1,6 @@
 <?php
 # *** LICENSE ***
-# Photon V.1
+# Photon Photo Galery V.0.1
 # 2015- Timo Van Neerden http://lehollandaisvolant.net/contact
 
 # Photon is free software, under the WTFPL licence:
@@ -13,6 +13,7 @@ $GLOBALS['main_media_dir'] = 'img';
 $GLOBALS['request_folder'] = isset($_GET['fol']) ? htmlspecialchars($_GET['fol']) : '';
 $GLOBALS['start_list_count'] = isset($_GET['page']) ? (is_numeric($_GET['page']) ? $_GET['page'] : 0) : 0;
 $GLOBALS['image_per_page'] = 50;
+$GLOBALS['photon_home_dir'] = '/folio/';
 
 ?>
 
@@ -20,14 +21,41 @@ $GLOBALS['image_per_page'] = 50;
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
-<title>Photon, portfolio</title>
+<title>Photon, photo galery</title>
 <style type="text/css">
-body {
+html {
 	background: #212121;
-	background: linear-gradient(#212121 500px, #111);
 	color: #eee;
-	font-family: sans-serif;
+	font-size: 62.5%;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
+body { 
+	font-size: 14px;
+	width: 80%;
+	margin: 0 auto;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+header {
+}
+header h1 {
+	font-weight: normal;
+	font-size: 1.7em;
+	text-shadow: 2px 2px 2px #000;
+}
+
+#axe {
+	background: linear-gradient(to right, #212121, #212121) 0 2px no-repeat, linear-gradient(to right, #646464, #212121 ) 0 1px no-repeat, linear-gradient(to right, #010101, #212121 ) 0 0px no-repeat;
+	padding-top: 20px;
+}
+
 
 #list-folders {
 	margin: 0 auto;
@@ -39,12 +67,12 @@ body {
 
 /* Liste des images : sous la forme d’un mur d’images */
 #list-images {
-	text-align: center;
-	padding: 20px 2%;
-	border-radius: 20px;
+	text-align: left;
+	padding: 20px 0;
 }
 
 #list-images .image_bloc {
+	text-align: center;
 	background: white;
 	display:inline-block;
 	margin: 1px;
@@ -144,7 +172,6 @@ body {
 	filter: blur(25px) opacity(.2);
 	-webkit-filter: blur(25px) opacity(.2);
 	-ms-filter: blur(25px) opacity(.2);
-	/*filter:url(#blur); *//* Firefox fallback ; might be needed for fx34, also uncomment SVG at bottom of file */
 }
 
 #slider-box-img-bg-blur-fallback {
@@ -176,16 +203,32 @@ body {
 	top:0; bottom:0; left:0; right:0;
 }
 
-#slider-box-inf {
+#slider-box-bottom {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	height: 48px;
-	bottom: 0; left: 0; right: 0;
-	border-top: 2px solid #464646;
+	bottom: 0; left: 10px; right: 10px;
 	position: absolute;
+	display: flex;
+	align-items: center;
 }
 
-#slider-box-inf a, #slider-box .slider-quit {
+#slider-img-info {
+	flex: 1 1 0%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	height: 48px;
+	line-height: 48px;
+}
+
+#slider-buttons {
+	flex: 1 1 0%;
+	line-height: 48px;
+	text-align: right;
+}
+
+#slider-buttons a,
+#slider-box .slider-quit {
 	background: url(slide.png) no-repeat;
 	display: inline-block;
 	height: 32px; width: 32px;
@@ -196,20 +239,20 @@ body {
 
 }
 
-#slider-box-inf a:active {
+#slider-buttons a:active {
 	top: 1px;
 }
 
-#slider-box-inf .slider-first {
+#slider-buttons .slider-first {
 	background-position: 0 -96px;
 }
-#slider-box-inf .slider-prev {
+#slider-buttons .slider-prev {
 	background-position: 0 -32px;
 }
-#slider-box-inf .slider-next {
+#slider-buttons .slider-next {
 	background-position: 0 -160px;
 }
-#slider-box-inf .slider-last {
+#slider-buttons .slider-last {
 	background-position: 0 -128px;
 }
 #slider-box .slider-quit {
@@ -219,37 +262,41 @@ body {
 	z-index: 99;
 }
 
-.slider-buttons {
-	margin: 0;
-	line-height: 48px;
-	text-align: center;
-}
-
 #pager {
 	text-align: center;
 	padding: 20px;
 }
 
 #pager a, #pager span {
-	text-decoration: none;
-	color: white;
+	color: #eee;
 	display: inline-block;
-	width: 30px;
-	height: 30px;
-	line-height: 30px;
+	padding: 5px;
+	vertical-align: center;
 }
 
 #pager a {
-	font-weight: bold;
+	text-shadow: 0px 0px 3px gray;
 }
+
+footer {
+	font-size: .80em;
+	color: silver;
+	text-align: center;
+	margin: 20px 0 20px;
+	padding-top: 20px;
+
+	background: linear-gradient(to right, #212121, #212121) 0 2px no-repeat, linear-gradient(to right, #212121, #646464, #212121 ) 0 1px no-repeat, linear-gradient(to right, #212121, #010101, #212121 ) 0 0px no-repeat;
+}
+
+
 </style>
 </head>
 
 <body id="body">
 
-<div id="top">
-	<h1>Photon, Portfolio</h1>
-</div>
+<header>
+	<h1><a href="<?php echo $GLOBALS['photon_home_dir'] ?>">Photon, photo galery</a></h1>
+</header>
 
 <div id="axe">
 
@@ -313,7 +360,7 @@ else {
 			$img_list = array_slice($img_list, $GLOBALS['start_list_count']*$GLOBALS['image_per_page'], $GLOBALS['image_per_page'], false);
 
 			foreach ($img_list as $i => $image) {
-				echo '<div id="bloc_'.$i.'" data-img-url="'.$sub_dir.'/'.$image.'" class="image_bloc">
+				echo '<div id="bloc_'.$i.'" data-img-url="'.$sub_dir.'/'.$image.'" data-img-name="'.$image.'" class="image_bloc">
 					<span class="spantop black">
 						<span title="Ouvrir Slideshow" class="bouton bouton-slide" onclick="slideshow(\'start\', '.$i.');"></span>
 						<a title="Voir" class="bouton bouton-lien" href="'.$sub_dir.'/'.$image.'">&nbsp;</a>
@@ -323,15 +370,16 @@ else {
 			}
 			echo '</div>';
 			$nb_pages = ceil($collection_count / $GLOBALS['image_per_page']) -1;
-			echo '<div id="pager"> page ';
+			echo '<div id="pager">Page ';
 			for ($i = 0; $i <= $nb_pages; $i++) {
 				if ($i == $GLOBALS['start_list_count']) {
-					echo '<span>'.$i.'</span>';
+					echo '<span>'.$i.'</span>|';
 				}
 				else {
-					echo '<a href="?fol='.$GLOBALS['request_folder'].'&amp;page='.$i.'">'.$i.'</a>';
+					echo '<a href="?fol='.$GLOBALS['request_folder'].'&amp;page='.$i.'">'.$i.'</a>|';
 				}
 			}
+			echo '<a href="?fol='.$GLOBALS['request_folder'].'&amp;page=all">Tout</a>';
 			echo '</div>';
 
 		}
@@ -358,8 +406,9 @@ else {
 			<div id="slider-box-img-wrap"><a id="slider-img-a" href="#"></a><img id="slider-img" src="image-loading.png" alt="#"/></div>
 			<a href="#" onclick="slideshow('close'); return false;" class="slider-quit"></a>
 		</div>
-		<div id="slider-box-inf">
-			<p class="slider-buttons">
+		<div id="slider-box-bottom">
+			<p id="slider-img-info"></p>
+			<p id="slider-buttons">
 				<a href="#" onclick="slideshow('first'); return false;" class="slider-first"></a>
 				<a href="#" onclick="slideshow('prev'); return false;" class="slider-prev" id="slider-prev"></a>
 				<a href="#" onclick="slideshow('next'); return false;" class="slider-next" id="slider-next"></a>
@@ -397,8 +446,6 @@ function slideshow(action, imageIndex) {
 	newImg.onload = function() {
 		ElemImg.src = newImg.src;
 		document.getElementById('slider-img-a').href = newImg.src;
-		document.getElementById('slider-box-img-bg-blur').style.backgroundImage = 'url('+newImg.src+')';
-
 		ElemImg.style.marginTop = (Math.round((box_height - Math.min(img_height/ratio_w, box_height))/2))+'px';
 	};
 
@@ -409,6 +456,9 @@ function slideshow(action, imageIndex) {
 		ElemImg.style.marginTop = '0';
 	};
 	newImg.src = document.getElementById('bloc_'+counter).dataset.imgUrl;
+	var imgName = document.getElementById('bloc_'+counter).dataset.imgName;
+	document.getElementById('slider-img-info').innerHTML = '('+(counter+1)+'/'+(curr_max+1)+')'+' <b>'+imgName+'</b>';
+	document.getElementById('slider-box-img-bg-blur').style.backgroundImage = 'url('+newImg.src+')';
 }
 
 function checkKey(e) {
@@ -437,21 +487,13 @@ function checkKey(e) {
 
 </script>
 
-<!-- svg blur effect for Firefox -->
-<!--<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-	<filter id="blur">
-		<feGaussianBlur stdDeviation="25"/>
-		<feComponentTransfer>
-			<feFuncA type="linear" slope="0.2"/>
-		</feComponentTransfer>
-	</filter>
-</svg>-->
-
 <?php 
 }
 ?>
 
 </div> <!-- end #axe -->
+
+<footer>Made with Photon, timo's Galery.</footer>
 
 </body>
 </html>
