@@ -119,25 +119,41 @@ body {
 
 #slider {
 	display: none;
-	background: rgba(0, 0, 0, .8);
+	background: black;
 	position: fixed;
 	top: 0; left: 0; right: 0; bottom: 0;
 	z-index: 9;
 }
 
 #slider-box {
-	box-shadow: 8px 8px 12px black;
-	border: 7px solid rgba(70, 70, 70, 1);
-	border-radius: 8px;
-	background: rgba(0, 0, 0, .8);
+	border: none;
 	position: absolute;
-	top: 20px; right: 20px; left: 20px; bottom: 20px;
+	top: 0px; right: 0px; left: 0px; bottom: 0px;
 	text-align: left;
 }
 
 #slider-box-cnt {
 	position: absolute;
 	top: 0; right: 0; bottom: 48px; left: 0;
+}
+
+#slider-box-img-bg {
+	background-color: black;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+#slider-box-img-bg-blur {
+	background-size: 100% 100%;
+	width: 100%;
+	height: 100%;
+	filter: blur(25px) opacity(.2);
+	-webkit-filter: blur(25px) opacity(.2);
+	-moz-filter: blur(25px) opacity(.2);
+	-o-filter: blur(25px) opacity(.2);
+	-ms-filter: blur(25px) opacity(.2);
+	filter:url(#blur); /* Firefox fallback ; needed for fx34 */
 }
 
 #slider-box-img-wrap {
@@ -159,7 +175,7 @@ body {
 #slider-img-a {
 	display:block;
 	position: absolute;
-	top:0; bottom:0; left:0px; right:50px;
+	top:0; bottom:0; left:0; right:0;
 }
 
 #slider-box-inf {
@@ -177,10 +193,13 @@ body {
 	height: 32px; width: 32px;
 	vertical-align: middle;
 	position: relative;
+	box-shadow: 0 0 5px white;
+	border-radius: 4px;
+
 }
 
 #slider-box-inf a:active, #slider-box .slider-quit:active {
-	top: 1px;
+	top: 11px;
 }
 
 #slider-box-inf .slider-first {
@@ -198,7 +217,7 @@ body {
 #slider-box .slider-quit {
 	background-position: 0 -64px;
 	position: absolute;
-	top: 0; right: 0;
+	top: 10px; right: 10px;
 	z-index: 99;
 }
 
@@ -231,7 +250,7 @@ body {
 <body id="body">
 
 <div id="top">
-<h1>Photon, Portfolio</h1>
+	<h1>Photon, Portfolio</h1>
 </div>
 
 <div id="axe">
@@ -263,14 +282,14 @@ if (empty($GLOBALS['request_folder'])) {
 	}
 
 	// echos the list of folders
-	echo '<div id="list-folders">';
+	echo '<div id="list-folders">'."\n";
 	echo 'Liste des dossiers publics&nbsp;:';
-	echo '<ul>';
+	echo '<ul>'."\n";
 	foreach ($fichiers as $i => $dossier) {
-		echo '<li><a href="?fol='.urlencode($i).'">'.$i.'</a></li>';
+		echo "\t".'<li><a href="?fol='.urlencode($i).'">'.$i.'</a></li>'."\n";
 	}
-	echo '</ul>';
-	echo '</div>';
+	echo '</ul>'."\n";
+	echo '</div>'."\n";
 
 }
 
@@ -312,7 +331,7 @@ else {
 					echo '<span>'.$i.'</span>';
 				}
 				else {
-					echo '<a href="?fol='.$GLOBALS['request_folder'].'&page='.$i.'">'.$i.'</a>';
+					echo '<a href="?fol='.$GLOBALS['request_folder'].'&amp;page='.$i.'">'.$i.'</a>';
 				}
 			}
 			echo '</div>';
@@ -328,21 +347,22 @@ else {
 		echo "no such dir"; die;
 	}
 
-}
-
-
 ?>
 
 
 <div id="slider">
 	<div id="slider-box">
 		<div id="slider-box-cnt">
-			<div id="slider-box-img-wrap"><a id="slider-img-a" href="#"></a><img id="slider-img" src="" alt="#"/></div>
+			<div id="slider-box-img-bg"><div id="slider-box-img-bg-blur"></div></div>
+			<div id="slider-box-img-wrap"><a id="slider-img-a" href="#"></a><img id="slider-img" src="image-loading.png" alt="#"/></div>
 			<a href="#" onclick="slideshow('close'); return false;" class="slider-quit"></a>
 		</div>
 		<div id="slider-box-inf">
 			<p class="slider-buttons">
-	<a href="#" onclick="slideshow('first'); return false;" class="slider-first"></a><a href="#" onclick="slideshow('prev'); return false;" class="slider-prev" id="slider-prev"></a><a href="#" onclick="slideshow('next'); return false;" class="slider-next" id="slider-next"></a><a href="#" onclick="slideshow('last'); return false;" class="slider-last"></a>
+				<a href="#" onclick="slideshow('first'); return false;" class="slider-first"></a>
+				<a href="#" onclick="slideshow('prev'); return false;" class="slider-prev" id="slider-prev"></a>
+				<a href="#" onclick="slideshow('next'); return false;" class="slider-next" id="slider-next"></a>
+				<a href="#" onclick="slideshow('last'); return false;" class="slider-last"></a>
 			</p>
 		</div>
 	</div>
@@ -375,8 +395,8 @@ function slideshow(action, imageIndex) {
 
 	newImg.onload = function() {
 		ElemImg.src = newImg.src;
-		//var im = curr_img[counter];
-		//document.getElementById('slider-img-a').href = '?file_id='+im.id;
+		document.getElementById('slider-img-a').href = newImg.src;
+		document.getElementById('slider-box-img-bg-blur').style.backgroundImage = 'url('+newImg.src+')';
 
 		ElemImg.style.marginTop = (Math.round((box_height - Math.min(img_height/ratio_w, box_height))/2))+'px';
 	};
@@ -415,6 +435,21 @@ function checkKey(e) {
 }
 
 </script>
+
+<!-- svg blur effect for Firefox -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<filter id="blur">
+		<feGaussianBlur stdDeviation="25"/>
+		<feComponentTransfer>
+			<feFuncA type="linear" slope="0.2"/>
+		</feComponentTransfer>
+	</filter>
+</svg>
+<?php 
+}
+?>
+
+</div> <!-- end #axe -->
 
 </body>
 </html>
