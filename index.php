@@ -11,9 +11,8 @@ error_reporting(-1);
 
 $GLOBALS['main_media_dir'] = 'img';
 $GLOBALS['request_folder'] = isset($_GET['fol']) ? htmlspecialchars($_GET['fol']) : '';
-$GLOBALS['start_list_count'] = isset($_GET['page']) ? (is_numeric($_GET['page']) ? $_GET['page'] : 0) : 0;
+$GLOBALS['start_list_count'] = (isset($_GET['page']) and (is_numeric($_GET['page']) or $_GET['page'] == 'all')) ? $_GET['page'] : '0';
 $GLOBALS['image_per_page'] = 50;
-$GLOBALS['photon_home_dir'] = '/folio/';
 
 ?>
 
@@ -43,8 +42,6 @@ a:hover {
 	text-decoration: underline;
 }
 
-header {
-}
 header h1 {
 	font-weight: normal;
 	font-size: 1.7em;
@@ -53,7 +50,7 @@ header h1 {
 
 #axe {
 	background: linear-gradient(to right, #212121, #212121) 0 2px no-repeat, linear-gradient(to right, #646464, #212121 ) 0 1px no-repeat, linear-gradient(to right, #010101, #212121 ) 0 0px no-repeat;
-	padding-top: 20px;
+	padding-top: 1px;
 }
 
 
@@ -295,7 +292,7 @@ footer {
 <body id="body">
 
 <header>
-	<h1><a href="<?php echo $GLOBALS['photon_home_dir'] ?>">Photon, photo gallery</a></h1>
+	<h1><a href="?">Photon, photo gallery</a></h1>
 </header>
 
 <div id="axe">
@@ -328,7 +325,7 @@ if (empty($GLOBALS['request_folder'])) {
 
 	// echos the list of folders
 	echo '<div id="list-folders">'."\n";
-	echo 'Liste des dossiers publics&nbsp;:';
+	echo '<p id="media-path">Liste des dossiers publics&nbsp;:</p>';
 	echo '<ul>'."\n";
 	foreach ($fichiers as $i => $dossier) {
 		echo "\t".'<li><a href="?fol='.urlencode($i).'">'.$i.'</a></li>'."\n";
@@ -345,8 +342,12 @@ else {
 	// avoid requests of type  "../../../../dir", that might scan system-dirs.
 	// compares stings of realpath(main_dir/requested) and realpath(main_dir)/requested.
 	if (realpath($sub_dir) !== realpath($GLOBALS['main_media_dir']).'/'.$GLOBALS['request_folder']) {
-		echo 'forbidden';
+		echo '<p id="media-path">Path forbidden.</p>'."\n";
 		die;
+	}
+	else {
+		echo '<p id="media-path"><a href="?">home</a> &gt; '.$GLOBALS['request_folder'].'</p>'."\n";
+
 	}
 
 	// Tests if dir exists and scans it.
@@ -357,7 +358,9 @@ else {
 		echo '<div id="list-images">';
 		if (!empty($img_list)) {
 			$collection_count = count($img_list);
-			$img_list = array_slice($img_list, $GLOBALS['start_list_count']*$GLOBALS['image_per_page'], $GLOBALS['image_per_page'], false);
+			if (is_numeric($GLOBALS['start_list_count'])) {
+				$img_list = array_slice($img_list, $GLOBALS['start_list_count']*$GLOBALS['image_per_page'], $GLOBALS['image_per_page'], false);
+			}
 
 			foreach ($img_list as $i => $image) {
 				echo '<div id="bloc_'.$i.'" data-img-url="'.$sub_dir.'/'.$image.'" data-img-name="'.$image.'" class="image_bloc">
@@ -372,14 +375,19 @@ else {
 			$nb_pages = ceil($collection_count / $GLOBALS['image_per_page']) -1;
 			echo '<div id="pager">Page ';
 			for ($i = 0; $i <= $nb_pages; $i++) {
-				if ($i == $GLOBALS['start_list_count']) {
+				if ((string)$i == $GLOBALS['start_list_count']) {
+
 					echo '<span>'.$i.'</span>|';
 				}
 				else {
 					echo '<a href="?fol='.$GLOBALS['request_folder'].'&amp;page='.$i.'">'.$i.'</a>|';
 				}
 			}
-			echo '<a href="?fol='.$GLOBALS['request_folder'].'&amp;page=all">Tout</a>';
+			if ($GLOBALS['start_list_count'] == 'all') {
+				echo '<span>Tout</span>';
+			} else {	
+				echo '<a href="?fol='.$GLOBALS['request_folder'].'&amp;page=all">Tout</a>';
+			}
 			echo '</div>';
 
 		}
