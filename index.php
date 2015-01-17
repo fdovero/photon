@@ -1,6 +1,6 @@
 <?php
 # *** LICENSE ***
-# Photon Photo Galery V.0.1
+# Photon Photo Gallery V.0.1
 # 2015- Timo Van Neerden http://lehollandaisvolant.net/contact
 
 # Photon is free software, under the WTFPL licence:
@@ -21,7 +21,7 @@ $GLOBALS['photon_home_dir'] = '/folio/';
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
-<title>Photon, photo galery</title>
+<title>Photon, photo gallery</title>
 <style type="text/css">
 html {
 	background: #212121;
@@ -295,7 +295,7 @@ footer {
 <body id="body">
 
 <header>
-	<h1><a href="<?php echo $GLOBALS['photon_home_dir'] ?>">Photon, photo galery</a></h1>
+	<h1><a href="<?php echo $GLOBALS['photon_home_dir'] ?>">Photon, photo gallery</a></h1>
 </header>
 
 <div id="axe">
@@ -493,7 +493,7 @@ function checkKey(e) {
 
 </div> <!-- end #axe -->
 
-<footer>Made with Photon, timo's Galery.</footer>
+<footer>Made with Photon, timo's Gallery.</footer>
 
 </body>
 </html>

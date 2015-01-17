@@ -2,7 +2,8 @@
 
 ---
 
-This is Photon, a ~~light-weight~~ no-weight PHP Galery.
+This is Photon, a ~~light-weight~~ no-weight PHP Gallery.
+
 2015- Timo van Neerden http://lehollandaisvolant.net/
 
 ---
