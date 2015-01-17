@@ -64,14 +64,12 @@ body {
 	text-shadow: 0 0 3px white, 0 0 3px white;
 	left: 0; /* counters the padding */
 	position: absolute;
-	color: black;
 	background: rgba(255,255,255,.8);
 	width: 100%;
 	height: 0;
 	word-wrap: break-word;
 	top: 0;
-	border-radius: 3px 3px 0 0;
-	border-bottom: #888 1px solid;
+	border-radius: 3px;
 }
 
 #list-images .image_bloc .spantop .bouton {
@@ -91,11 +89,6 @@ body {
 	background: url('slide.png') no-repeat;
 }
 
-
-#list-images .image_bloc:hover .spantop {
-	opacity: 1;
-}
-
 #list-images .image_bloc:hover .spantop {
 	opacity: 1;
 	-webkit-transition: ALL .15s ease-out;
@@ -103,8 +96,7 @@ body {
 	    -ms-transition: ALL .15s ease-out;
 	     -o-transition: ALL .15s ease-out;
 	        transition: ALL .15s ease-out;
-	line-height: 35px; height: 35px;
-	top: 0px;
+	line-height: 160px; height: 100%;
 }
 
 #list-images .image_bloc img {
@@ -137,7 +129,8 @@ body {
 	top: 0; right: 0; bottom: 48px; left: 0;
 }
 
-#slider-box-img-bg {
+#slider-box-img-bg,
+#slider-box-img-bg-blur-fallback {
 	background-color: black;
 	width: 100%;
 	height: 100%;
@@ -150,10 +143,15 @@ body {
 	height: 100%;
 	filter: blur(25px) opacity(.2);
 	-webkit-filter: blur(25px) opacity(.2);
-	-moz-filter: blur(25px) opacity(.2);
-	-o-filter: blur(25px) opacity(.2);
 	-ms-filter: blur(25px) opacity(.2);
-	filter:url(#blur); /* Firefox fallback ; needed for fx34 */
+	/*filter:url(#blur); *//* Firefox fallback ; might be needed for fx34, also uncomment SVG at bottom of file */
+}
+
+#slider-box-img-bg-blur-fallback {
+	background: black;
+	filter: opacity(0);
+	-webkit-filter: opacity(0);
+	-ms-filter: opacity(0);
 }
 
 #slider-box-img-wrap {
@@ -198,8 +196,8 @@ body {
 
 }
 
-#slider-box-inf a:active, #slider-box .slider-quit:active {
-	top: 11px;
+#slider-box-inf a:active {
+	top: 1px;
 }
 
 #slider-box-inf .slider-first {
@@ -353,7 +351,10 @@ else {
 <div id="slider">
 	<div id="slider-box">
 		<div id="slider-box-cnt">
-			<div id="slider-box-img-bg"><div id="slider-box-img-bg-blur"></div></div>
+			<div id="slider-box-img-bg">
+				<div id="slider-box-img-bg-blur-fallback"></div>
+				<div id="slider-box-img-bg-blur"></div>
+			</div>
 			<div id="slider-box-img-wrap"><a id="slider-img-a" href="#"></a><img id="slider-img" src="image-loading.png" alt="#"/></div>
 			<a href="#" onclick="slideshow('close'); return false;" class="slider-quit"></a>
 		</div>
@@ -437,14 +438,15 @@ function checkKey(e) {
 </script>
 
 <!-- svg blur effect for Firefox -->
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+<!--<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
 	<filter id="blur">
 		<feGaussianBlur stdDeviation="25"/>
 		<feComponentTransfer>
 			<feFuncA type="linear" slope="0.2"/>
 		</feComponentTransfer>
 	</filter>
-</svg>
+</svg>-->
+
 <?php 
 }
 ?>
