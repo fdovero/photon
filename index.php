@@ -318,7 +318,7 @@ if (empty($GLOBALS['request_folder'])) {
 	$main_dir = rm_dots_dir(scandir($GLOBALS['main_media_dir']));
 
 	foreach ($main_dir as $i => $collection_dir) {
-		if (is_dir($GLOBALS['main_media_dir'].'/'.$collection_dir)) {
+		if (is_dir($GLOBALS['main_media_dir'].DIRECTORY_SEPARATOR.$collection_dir)) {
 			$fichiers[$collection_dir] = rm_dots_dir(scandir($GLOBALS['main_media_dir'].'/'.$collection_dir));
 		}
 	}
@@ -341,7 +341,7 @@ else {
 
 	// avoid requests of type  "../../../../dir", that might scan system-dirs.
 	// compares stings of realpath(main_dir/requested) and realpath(main_dir)/requested.
-	if (realpath($sub_dir) !== realpath($GLOBALS['main_media_dir']).'/'.$GLOBALS['request_folder']) {
+	if (realpath($sub_dir) !== realpath($GLOBALS['main_media_dir']).DIRECTORY_SEPARATOR.$GLOBALS['request_folder']) {
 		echo '<p id="media-path">Path forbidden.</p>'."\n";
 		die;
 	}
