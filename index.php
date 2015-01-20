@@ -181,23 +181,22 @@ header h1 {
 #slider-box-img-wrap {
 	width: 100%;
 	height: 100%;
-	display: inline-block;
-	position: absolute;
-	text-align: center;
+	display: flex;
+	align-items: center;
 }
 
 #slider-img {
 	max-width: 100%;
 	max-height: 100%;
-	width: auto;
-	height: auto;
-	vertical-align: middle;
+	margin: auto;
+	z-index: 1;
 }
 
 #slider-img-a {
 	display:block;
 	position: absolute;
 	top:0; bottom:0; left:0; right:0;
+	z-index: 2;
 }
 
 #slider-box-bottom {
@@ -432,23 +431,21 @@ var counter = 0;
 document.onkeydown = checkKey;
 
 function slideshow(action, imageIndex) {
-	if (action == 'close') {
-		document.getElementById('slider').style.display = 'none';
-	}
-
-	var ElemImg = document.getElementById('slider-img');
-
-	var newImg = new Image();
-    
+	
 	switch(action) {
 		case 'start' : document.getElementById('slider').style.display = 'block'; counter = imageIndex; break;
 		case 'first' : counter = 0; break;
 		case 'prev'  : counter = Math.max(--counter, 0); break;
 		case 'next'  : counter = Math.min(++counter, curr_max); break;
 		case 'last'  : counter = curr_max; break;
+		case 'close' : document.getElementById('slider').style.display = 'none'; break;
 		default      : console.log('action not supported');
     }
 
+	var ElemImg = document.getElementById('slider-img');
+
+	var newImg = new Image();
+	
 	var box_height = document.getElementById('slider-box-img-wrap').clientHeight;
 	var box_width = document.getElementById('slider-box-img-wrap').clientWidth;
 	var img_height = document.getElementById('img_'+counter).naturalHeight;
@@ -458,7 +455,6 @@ function slideshow(action, imageIndex) {
 	newImg.onload = function() {
 		ElemImg.src = newImg.src;
 		document.getElementById('slider-img-a').href = newImg.src;
-		ElemImg.style.marginTop = (Math.round((box_height - Math.min(img_height/ratio_w, box_height))/2))+'px';
 	};
 
 	newImg.onerror = function() {
