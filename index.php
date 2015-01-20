@@ -95,6 +95,11 @@ header h1 {
 	word-wrap: break-word;
 	top: 0;
 	border-radius: 3px;
+	-webkit-transition: ALL .15s ease-out;
+	   -moz-transition: ALL .15s ease-out;
+	    -ms-transition: ALL .15s ease-out;
+	     -o-transition: ALL .15s ease-out;
+	        transition: ALL .15s ease-out;
 }
 
 #list-images .image_bloc .spantop .bouton {
@@ -116,11 +121,6 @@ header h1 {
 
 #list-images .image_bloc:hover .spantop {
 	opacity: 1;
-	-webkit-transition: ALL .15s ease-out;
-	   -moz-transition: ALL .15s ease-out;
-	    -ms-transition: ALL .15s ease-out;
-	     -o-transition: ALL .15s ease-out;
-	        transition: ALL .15s ease-out;
 	line-height: 160px; height: 100%;
 }
 
@@ -439,11 +439,15 @@ function slideshow(action, imageIndex) {
 	var ElemImg = document.getElementById('slider-img');
 
 	var newImg = new Image();
-	if (action == 'start') { document.getElementById('slider').style.display = 'block'; counter = imageIndex; }
-	if (action == 'first') counter = 0;
-	if (action == 'prev') counter = Math.max(--counter, 0);
-	if (action == 'next') counter = Math.min(++counter, curr_max);
-	if (action == 'last') counter = curr_max;
+    
+	switch(action) {
+		case 'start' : document.getElementById('slider').style.display = 'block'; counter = imageIndex; break;
+		case 'first' : counter = 0; break;
+		case 'prev'  : counter = Math.max(--counter, 0); break;
+		case 'next'  : counter = Math.min(++counter, curr_max); break;
+		case 'last'  : counter = curr_max; break;
+		default      : console.log('action not supported');
+    }
 
 	var box_height = document.getElementById('slider-box-img-wrap').clientHeight;
 	var box_width = document.getElementById('slider-box-img-wrap').clientWidth;
