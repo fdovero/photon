@@ -306,11 +306,18 @@ footer {
 $fichiers = array();
 
 // remove the folders "." and ".." from the list of files returned by "scandir".
-// $array must be previously sorted in order to get "." and ".." in the top of the array.
 function rm_dots_dir($array) {
-	array_shift($array);
-	array_shift($array);
+	if (($key = array_search('..', $array)) !== FALSE) { unset($array[$key]); }
+	if (($key = array_search('.', $array)) !== FALSE) { unset($array[$key]); }
 	return ($array);
+}
+
+// detects if folder contains ".private" file; where $dir = scandir('dir/').
+function is_private_dir($dir) {
+	if ((array_search('.private', $dir)) !== FALSE) {
+		return TRUE;
+	}
+	return FALSE;
 }
 
 
@@ -323,7 +330,10 @@ if (empty($GLOBALS['request_folder'])) {
 
 	foreach ($main_dir as $i => $collection_dir) {
 		if (is_dir($GLOBALS['main_media_dir'].'/'.$collection_dir)) {
-			$fichiers[$collection_dir] = rm_dots_dir(scandir($GLOBALS['main_media_dir'].'/'.$collection_dir));
+			// ignore dir if it contains ".private" file.
+			if (!is_private_dir($dir = scandir($GLOBALS['main_media_dir'].'/'.$collection_dir)) ) {
+				$fichiers[$collection_dir] = rm_dots_dir($dir);
+			}
 		}
 	}
 
@@ -345,18 +355,26 @@ else {
 
 	// avoid requests of type  "../../../../dir", that might scan system-dirs.
 	// compares stings of realpath(main_dir/requested) and realpath(main_dir)/requested.
+	// if path is wrong, die.
 	if (realpath($sub_dir) !== realpath($GLOBALS['main_media_dir']).'/'.$GLOBALS['request_folder']) {
 		echo '<p id="media-path">Path forbidden.</p>'."\n";
 		die;
 	}
+	// else, path is good: go on.
 	else {
 		echo '<p id="media-path"><a href="?">home</a> &gt; '.$GLOBALS['request_folder'].'</p>'."\n";
-
 	}
 
 	// Tests if dir exists and scans it.
 	if (is_dir($sub_dir)) {
-		$img_list = rm_dots_dir(scandir($sub_dir));
+		// verify if it’s private
+		if (is_private_dir($sub_dir_contains = scandir($sub_dir)) ) {
+			// private: remove ".private" file
+			$key = array_search('.private', $sub_dir_contains);
+			unset($sub_dir_contains[$key]);
+		}
+
+		$img_list = rm_dots_dir($sub_dir_contains);
 	
 		// show images
 		echo '<div id="list-images">';
