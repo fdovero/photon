@@ -107,6 +107,10 @@ header h1 {
 }
 
 #list-images .image_bloc .spantop .bouton-lien {
+	background: url('slide.png') no-repeat 0 -224px;
+}
+
+#list-images .image_bloc .spantop .bouton-lien[download] {
 	background: url('slide.png') no-repeat 0 -192px;
 }
 
@@ -367,6 +371,7 @@ else {
 					<span class="spantop black">
 						<span title="Ouvrir Slideshow" class="bouton bouton-slide" onclick="slideshow(\'start\', '.$i.');"></span>
 						<a title="Voir" class="bouton bouton-lien" href="'.$sub_dir.'/'.$image.'">&nbsp;</a>
+						<a title="Télécharger" class="bouton bouton-lien" download href="'.$sub_dir.'/'.$image.'">&nbsp;</a>
 					</span>
 					<img id="img_'.$i.'" src="'.$sub_dir.'/'.$image.'" alt="'.htmlspecialchars($image).'">
 				</div>'."\n";
@@ -501,7 +506,7 @@ function checkKey(e) {
 
 </div> <!-- end #axe -->
 
-<footer>Made with Photon, timo's Gallery.</footer>
+<footer>Made with Photon, <a href="http://lehollandaisvolant.net/">Timo's</a> Gallery.</footer>
 
 </body>
 </html>
